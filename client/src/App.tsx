@@ -1,7 +1,9 @@
+import Auth from './pages/Auth';
+
 function App() {
   return (
     <>
-      <h1>Mernssenger</h1>
+      <Auth />
     </>
   );
 }
