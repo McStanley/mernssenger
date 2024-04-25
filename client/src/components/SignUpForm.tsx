@@ -1,25 +1,60 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { isAxiosError } from 'axios';
+import { useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import AuthInputs from './AuthInputs';
 import AuthInput from './AuthInput';
 import AuthButtons from './AuthButtons';
 import AuthButton from './AuthButton';
+import api from '../utils/api';
+import User from '../types/User';
 
 interface SignUpFormProps {
   switchForm: () => void;
 }
 
+interface Inputs {
+  username: string;
+  password: string;
+  password2: string;
+}
+
 function SignUpForm({ switchForm }: SignUpFormProps) {
-  const formMethods = useForm();
+  const [responseError, setResponseError] = useState<string | null>(null);
+  const formMethods = useForm({
+    defaultValues: { username: '', password: '', password2: '' },
+  });
 
-  const { handleSubmit } = formMethods;
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = formMethods;
 
-  const onSubmit = () => {
-    alert('submit');
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { username, password, password2 } = data;
+
+    setResponseError(null);
+
+    try {
+      await api.post<{ user: User }>('/auth/sign-up', {
+        username,
+        password,
+        password2,
+      });
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 400) {
+        setResponseError(error.response.data.errors[0].msg);
+      } else {
+        setResponseError('Operation failed');
+      }
+    }
   };
 
   return (
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+        {responseError && (
+          <p className="mb-4 font-medium text-red-900">{responseError}</p>
+        )}
         <AuthInputs>
           <AuthInput
             type="text"
@@ -57,9 +92,10 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
           />
         </AuthInputs>
         <AuthButtons>
-          <AuthButton>Sign up</AuthButton>
+          <AuthButton disabled={isSubmitting}>Sign up</AuthButton>
           <button
             type="button"
+            disabled={isSubmitting}
             onClick={switchForm}
             className="font-medium text-lime-700 hover:text-lime-800"
           >

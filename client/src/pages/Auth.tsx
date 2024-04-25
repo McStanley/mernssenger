@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Mernssenger from '../components/Mernssenger';
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
 import viteLogo from '/vite.svg';
@@ -15,11 +16,7 @@ function Auth() {
       </header>
       <main className="mx-auto mt-28 w-fit flex-1 text-center">
         <h1 className="text-4xl min-[400px]:text-5xl sm:text-6xl">
-          <span className="text-green-800">M</span>
-          <span className="text-gray-600">e</span>
-          <span className="text-blue-400">r</span>
-          <span className="text-lime-700">n</span>
-          <span>ssenger</span>
+          <Mernssenger />
         </h1>
         <p className="mt-4 text-gray-700">
           Get connected with your friends – MERN style.
