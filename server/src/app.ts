@@ -8,8 +8,9 @@ import session from './middleware/session';
 import appendUser from './middleware/appendUser';
 
 import authRouter from './routes/auth';
-
-import env from './env';
+import usersRouter from './routes/users';
+import chatsRouter from './routes/chats';
+import messagesRouter from './routes/messages';
 
 import './auth/setupPassport';
 
@@ -19,7 +20,7 @@ app.use(logger('dev'));
 
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: true,
     credentials: true,
   }),
 );
@@ -34,5 +35,8 @@ app.use(passport.session());
 app.use(appendUser);
 
 app.use('/auth', authRouter);
+app.use('/users', usersRouter);
+app.use('/chats', chatsRouter);
+app.use('/messages', messagesRouter);
 
 export default app;

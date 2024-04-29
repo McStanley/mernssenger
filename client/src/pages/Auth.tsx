@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Mernssenger from '../components/Mernssenger';
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
@@ -6,6 +7,14 @@ import viteLogo from '/vite.svg';
 
 function Auth() {
   const [showSignIn, setShowSignIn] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  }, [location.pathname, navigate]);
 
   const switchForm = () => setShowSignIn((v) => !v);
 

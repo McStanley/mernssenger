@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import useUser from './hooks/useUser';
 import Loading from './pages/Loading';
 import Home from './pages/Home';
@@ -45,7 +46,18 @@ function App() {
     return <Loading />;
   }
 
-  return user ? <Home /> : <Auth />;
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: user ? <Home /> : <Auth />,
+    },
+    {
+      path: '/chats/:id',
+      element: user ? <Home /> : <Auth />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
