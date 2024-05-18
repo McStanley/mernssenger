@@ -13,9 +13,6 @@ const env = cleanEnv(process.env, {
     desc: 'express-session secret',
     docs: 'https://www.npmjs.com/package/express-session',
   }),
-  CORS_ORIGIN: str({
-    devDefault: 'http://localhost:5173',
-  }),
 });
 
 export default env;
